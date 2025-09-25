@@ -82,7 +82,7 @@ To empower individuals with vision challenges by creating a seamless, personaliz
 ## 📥 Installation & Setup
 ```bash
 # Clone the repository
-git clone https://github.com/Yagna123k/Netra.git
+git clone https://github.com/Yagna123k/Netra-app.git
 
 # Move into project directory
 cd Netra
@@ -91,7 +91,7 @@ cd Netra
 npm install
 
 # Start the app
-npx expo start
+npx run android
 ```
 
 > Android-first due to system-level accessibility APIs. iOS adjustments available in-app.
