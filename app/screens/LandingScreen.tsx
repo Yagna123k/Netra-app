@@ -15,7 +15,8 @@ interface Props {
 
 const LandingScreen: React.FC<Props> = ({ navigation }) => {
   const handleButtonPress = (): void => {
-    Alert.alert('Success', 'Button working perfectly with TypeScript!');
+    console.log('🔄 Navigation button pressed'); // Debug log
+    navigation.navigate('SightDetails'); 
   };
 
   const handleNavigate = (): void => {
