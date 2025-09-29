@@ -17,20 +17,14 @@ const App = (): JSX.Element => {
       <Stack.Navigator 
         initialRouteName="Landing"
         screenOptions={{
-          headerStyle: {
-            backgroundColor: '#007AFF',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
+          headerShown: false,
         }}
       >
         <Stack.Screen 
           name="Landing" 
           component={LandingScreen}
           options={{
-            title: 'Home - TypeScript',
+            title: 'Home ',
           }}
         />
       </Stack.Navigator>

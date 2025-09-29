@@ -10,10 +10,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   disabled = false 
 }) => {
-  console.log('🔘 Button component rendered with props:', { title, variant, disabled }); // Debug log
-  
   const handlePress = (event: GestureResponderEvent) => {
-    console.log('📍 Button pressed event:', event.type); // Debug log
     if (!disabled) {
       onPress();
     }
@@ -38,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
       style={buttonStyle} 
       onPress={handlePress}
       disabled={disabled}
+      activeOpacity={0.8}
     >
       <Text style={textStyle}>{title}</Text>
     </TouchableOpacity>
@@ -46,15 +44,14 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
+    width: '100%',             
+    paddingVertical: 14,       
+    borderRadius: 15,          
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 120,
   },
   primary: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primary, 
   },
   secondary: {
     backgroundColor: Colors.secondary,
@@ -64,9 +61,11 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   text: {
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: Fonts.regular,
-    fontWeight: '600' as '600',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    
   },
   textPrimary: {
     color: Colors.white,
