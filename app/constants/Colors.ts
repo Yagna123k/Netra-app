@@ -12,7 +12,7 @@ export interface ColorPalette {
 }
 
 export const Colors: ColorPalette = {
-  primary: '#007AFF',
+  primary: '#1193d4',
   secondary: '#6C757D',
   success: '#28A745',
   danger: '#DC3545',
