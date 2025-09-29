@@ -4,6 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LandingScreen from './screens/LandingScreen';
 import { RootStackParamList } from './types/navigation';
+import SightDetails from './screens/SightDetails';
+import VisionProfile from './screens/VisionProfile';
+import EyeTest from './screens/EyeTest';
 
 console.log('🔧 App starting with gesture handler'); // Debug log
 
@@ -27,6 +30,61 @@ const App = (): JSX.Element => {
             title: 'Home ',
           }}
         />
+        <Stack.Screen 
+          name="SightDetails" 
+          component={SightDetails} 
+          options={{
+            title: 'Sight Details',
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+              
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20,
+
+            }
+          }}
+        />
+        <Stack.Screen 
+          name="VisionProfile" 
+          component={VisionProfile} 
+          options={{
+            title: 'Vision Profile',
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+              
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20,
+
+            }
+          }}
+        />
+        <Stack.Screen 
+          name="EyeTest" 
+          component={EyeTest} 
+          options={{
+            title: 'Eye Test',
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+              
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20,
+
+            }
+          }}
+        />
+        {/* Future screens will be added here */}
       </Stack.Navigator>
     </NavigationContainer>
   );
