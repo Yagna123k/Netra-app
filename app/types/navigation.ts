@@ -1,7 +1,8 @@
 export type RootStackParamList = {
   Landing: undefined;
   SightDetails: undefined;
-  VisionProfile: undefined;
+  VisionProfile: { mode: 'manual' | 'eyeTest' };
+  TestSettings: undefined;
   EyeTest: undefined;
   // We'll add more routes here later
 };

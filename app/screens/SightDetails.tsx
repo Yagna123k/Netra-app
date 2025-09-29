@@ -15,13 +15,13 @@ interface Props {
 const SightDetailsScreen: React.FC<Props> = ({ navigation }) => {
   const handleManualInput = () => {
     console.log("✍️ Manual Input pressed");
-    navigation.navigate("VisionProfile"); 
+    navigation.navigate("VisionProfile", { mode: "manual" });
   };
 
   const handleUploadPrescription = () => {
     console.log("📄 Upload Prescription pressed");
     // Add navigation here if needed later
-    navigation.navigate("EyeTest");
+    navigation.navigate("VisionProfile", {mode : 'eyeTest'});
   };
 
   return (
