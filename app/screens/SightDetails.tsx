@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation"; // same as LandingScreen
+import { RootStackParamList } from "../types/navigation";
+import { hp, wp } from "../helpers/common";
+import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { Colors } from "../constants/Colors";
 
 type SightDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -14,14 +17,11 @@ interface Props {
 
 const SightDetailsScreen: React.FC<Props> = ({ navigation }) => {
   const handleManualInput = () => {
-    console.log("✍️ Manual Input pressed");
     navigation.navigate("VisionProfile", { mode: "manual" });
   };
 
   const handleUploadPrescription = () => {
-    console.log("📄 Upload Prescription pressed");
-    // Add navigation here if needed later
-    navigation.navigate("VisionProfile", {mode : 'eyeTest'});
+    navigation.navigate("VisionProfile", { mode: "eyeTest" });
   };
 
   return (
@@ -32,10 +32,16 @@ const SightDetailsScreen: React.FC<Props> = ({ navigation }) => {
 
       <View style={styles.buttonsContainer}>
         {/* Manual Input Button */}
-        <TouchableOpacity onPress={handleManualInput} style={styles.manualButton}>
+        <TouchableOpacity
+          onPress={handleManualInput}
+          style={[styles.button, styles.manualButton]}
+          accessible
+          accessibilityRole="button"
+          accessibilityLabel="Manual Input Button"
+        >
           <View style={styles.buttonContent}>
             <View style={styles.iconContainer}>
-              <Text style={styles.pencilIcon}>✏️</Text>
+              <MaterialIcons name={'edit' as any} size={wp(7)} color={Colors.primary} />
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.buttonTitle}>Manual Input</Text>
@@ -48,10 +54,16 @@ const SightDetailsScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
 
         {/* Eye Test Button */}
-        <TouchableOpacity onPress={handleUploadPrescription} style={styles.eyeTestButton}>
+        <TouchableOpacity
+          onPress={handleUploadPrescription}
+          style={[styles.button, styles.eyeTestButton]}
+          accessible
+          accessibilityRole="button"
+          accessibilityLabel="Eye Test Button"
+        >
           <View style={styles.buttonContent}>
             <View style={styles.iconContainerBlue}>
-              <Text style={styles.eyeIcon}>👁️</Text>
+              <MaterialIcons name={'remove-red-eye' as any} size={wp(7)} color={Colors.lightPrimary} />
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.buttonTitleWhite}>Eye Test</Text>
@@ -73,101 +85,89 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-    padding: 15,
+    paddingHorizontal: wp(5),
+    paddingVertical: hp(3),
   },
   title: {
-    fontSize: 30,
+    fontSize: wp(7),
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: -250,
+    marginBottom: hp(5),
   },
   buttonsContainer: {
-    marginTop: 100,
     width: "100%",
-    paddingHorizontal: 20,
+  },
+  button: {
+    borderRadius: 16,
+    paddingVertical: hp(2),
+    paddingHorizontal: wp(4),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 4,
+    marginBottom: hp(3),
   },
   manualButton: {
     backgroundColor: "#f8f9fa",
-    borderRadius: 16,
-    marginBottom: 26,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   eyeTestButton: {
     backgroundColor: "#2196F3",
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   buttonContent: {
     flexDirection: "row",
     alignItems: "center",
   },
   iconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: wp(14),
+    height: wp(14),
+    borderRadius: '100%',
     backgroundColor: "#e3f2fd",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: wp(4),
   },
   iconContainerBlue: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: wp(14),
+    height: wp(14),
+    borderRadius: '100%',
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: wp(4),
   },
   textContainer: {
     flex: 1,
   },
   buttonTitle: {
-    fontSize: 20,
+    fontSize: wp(5),
     fontWeight: "600",
     color: "#333",
-    marginBottom: 4,
+    marginBottom: hp(0.5),
   },
   buttonTitleWhite: {
-    fontSize: 20,
+    fontSize: wp(5),
     fontWeight: "600",
     color: "#fff",
-    marginBottom: 4,
+    marginBottom: hp(0.5),
   },
   buttonSubtitle: {
-    fontSize: 14,
+    fontSize: wp(3.5),
     color: "#666",
-    lineHeight: 20,
+    lineHeight: hp(2.5),
   },
   buttonSubtitleWhite: {
-    fontSize: 14,
+    fontSize: wp(3.5),
     color: "rgba(255, 255, 255, 0.9)",
-    lineHeight: 20,
-  },
-  pencilIcon: {
-    fontSize: 24,
-    color: "#2196F3",
-  },
-  eyeIcon: {
-    fontSize: 24,
+    lineHeight: hp(2.5),
   },
   chevron: {
-    fontSize: 24,
+    fontSize: wp(8),
     color: "#ccc",
     fontWeight: "300",
   },
   chevronWhite: {
-    fontSize: 24,
+    fontSize: wp(8),
     color: "rgba(255, 255, 255, 0.7)",
     fontWeight: "300",
   },

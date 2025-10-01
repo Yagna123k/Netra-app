@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/ui/Button";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
 import { RouteProp } from "@react-navigation/native";
+import { hp, wp } from "../helpers/common";
 
 type VisionProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, "VisionProfile">;
@@ -19,14 +15,12 @@ type VisionProfileProps = {
 const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
   const { mode } = route.params ?? { mode: "manual" };
 
-  // Local states
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [leftEye, setLeftEye] = useState("");
   const [rightEye, setRightEye] = useState("");
 
-  // Save to AsyncStorage
   const handleNext = async () => {
     try {
       const visionData = {
@@ -38,10 +32,9 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       };
 
       await AsyncStorage.setItem("visionData", JSON.stringify(visionData));
-      console.log("✅ Saved to AsyncStorage:", visionData);
 
       if (mode === "manual") {
-        navigation.navigate("TestSettings");
+        navigation.navigate("Preferences");
       } else {
         navigation.navigate("EyeTest");
       }
@@ -62,6 +55,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
               onChangeText={setName}
               placeholder="Enter your name"
               placeholderTextColor="#b1b1b1"
+              accessible
+              accessibilityLabel="Name Input"
             />
           </View>
 
@@ -75,6 +70,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
               placeholderTextColor="#b1b1b1"
               keyboardType="number-pad"
               inputMode="numeric"
+              accessible
+              accessibilityLabel="Age Input"
             />
           </View>
 
@@ -86,6 +83,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
               onChangeText={setGender}
               placeholder="Enter your gender"
               placeholderTextColor="#b1b1b1"
+              accessible
+              accessibilityLabel="Gender Input"
             />
           </View>
 
@@ -101,6 +100,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
                   placeholderTextColor="#b1b1b1"
                   keyboardType="numeric"
                   inputMode="numeric"
+                  accessible
+                  accessibilityLabel="Left Eye Input"
                 />
               </View>
               <View style={styles.eyeInputWrapper}>
@@ -113,6 +114,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
                   placeholderTextColor="#b1b1b1"
                   keyboardType="numeric"
                   inputMode="numeric"
+                  accessible
+                  accessibilityLabel="Right Eye Input"
                 />
               </View>
             </View>
@@ -129,55 +132,45 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
 
 export default VisionProfile;
 
-
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    // textAlign: 'start',
-    margin: 25,
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: wp(5),
+    paddingVertical: hp(3),
   },
   buttonContainer: {
-    width: '90%',
-    alignItems: 'center',
-    marginBottom: 20,
-    marginHorizontal: 20,
+    width: "100%",
+    alignItems: "center",
+    marginBottom: hp(2),
   },
   inputText: {
-    fontSize: 20,
-    fontWeight: '300',
-    marginVertical: 10,
+    fontSize: wp(4.5),
+    fontWeight: "500",
+    marginVertical: hp(1),
   },
   input: {
-    height: 60,
-    backgroundColor: '#f9f9fA',
-    borderRadius: 15,
+    height: hp(7),
+    backgroundColor: "#f9f9fa",
+    borderRadius: wp(3),
     borderWidth: 1,
-    borderColor: '#ccc',
-    paddingHorizontal: 20,
-    marginBottom: 20,
-    fontSize: 20,
+    borderColor: "#ccc",
+    paddingHorizontal: wp(4),
+    marginBottom: hp(2),
+    fontSize: wp(4),
   },
   inputGroup: {
-    width: '90%',
-    marginHorizontal: 20,
-    marginVertical: 20,
+    width: "100%",
   },
-  inputContainer: {},
   eyeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-
   eyeInputWrapper: {
     flex: 1,
-    marginHorizontal: 10,
+    marginHorizontal: wp(2),
   },
+  inputContainer: {},
 });

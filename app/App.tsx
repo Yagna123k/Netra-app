@@ -7,7 +7,8 @@ import { RootStackParamList } from './types/navigation';
 import SightDetails from './screens/SightDetails';
 import VisionProfile from './screens/VisionProfile';
 import EyeTest from './screens/EyeTest';
-import TextSettings from './screens/TextSettings';
+import Preferences from './screens/Preferences';
+import Home from './screens/Home';
 
 console.log('🔧 App starting with gesture handler'); // Debug log
 
@@ -86,10 +87,10 @@ const App = (): JSX.Element => {
           }}
         />
         <Stack.Screen 
-          name="TestSettings" 
-          component={TextSettings} 
+          name="Preferences" 
+          component={Preferences} 
           options={{
-            title: 'Test Settings',
+            title: 'Vision Preferences',
             headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {
@@ -101,6 +102,14 @@ const App = (): JSX.Element => {
               fontSize: 20,
 
             }
+          }}
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={Home} 
+          options={{
+            title: 'Home',
+            headerShown: false,
           }}
         />
         {/* Future screens will be added here */}
