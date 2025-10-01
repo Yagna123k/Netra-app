@@ -5,7 +5,9 @@ export type RootStackParamList = {
   Preferences: undefined;
   EyeTest: undefined;
   Home:undefined;
-  // We'll add more routes here later
+  EyePreferences:undefined;
+  SampleEyeTest:undefined;
+  HearingTest:undefined;
 };
 
-console.log('🧭 Navigation types defined'); // Debug log
+console.log('🧭 Navigation types defined');
