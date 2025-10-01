@@ -5,6 +5,7 @@ import Button from '../components/ui/Button';
 import { Colors } from '../constants/Colors';
 import { Fonts } from '../constants/Fonts';
 import { RootStackParamList } from '../types/navigation';
+import { hp, wp } from '../helpers/common';
 
 type LandingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -17,34 +18,28 @@ interface Props {
 
 const LandingScreen: React.FC<Props> = ({ navigation }) => {
   const handleButtonPress = (): void => {
-    console.log('🔄 Navigation button pressed'); // Debug log
     navigation.navigate('SightDetails');
-  };
-
-  const handleNavigate = (): void => {
-    console.log('🔄 Navigation button pressed'); // Debug log
-    Alert.alert('Info', 'Navigation will be implemented in next step');
-  };
-
-  const handleDisabledPress = (): void => {
-    console.log('🚫 This should not log if button is disabled'); // Debug log
   };
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <View style={styles.Container1}>
+        <Image
+          source={require('../assets/logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+          accessible
+          accessibilityLabel="Netra logo"
+        />
 
-      <View style={{ alignItems: 'center' }}>
-        <Text style={styles.title}>Welcome to Netra </Text>
-        <Text style={styles.subtitle}>
-          Personalized vision comfort is now at your fingertips. Netra adapts
-          your phone's display to your unique eyesight, ensuring effortless
-          reading and reduced eye strain.
-        </Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>Welcome to Netra</Text>
+          <Text style={styles.subtitle}>
+            Personalized vision comfort is now at your fingertips. Netra adapts
+            your phone's display to your unique eyesight, ensuring effortless
+            reading and reduced eye strain.
+          </Text>
+        </View>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -54,18 +49,12 @@ const LandingScreen: React.FC<Props> = ({ navigation }) => {
           variant="primary"
         />
       </View>
-      <View>
-        <Text style={styles.terms}>
-          By continuing, you agree to our{' '}
-          <Text style={{ fontFamily: Fonts.bold, color: '#54b0df' }}>
-            Terms of Service
-          </Text>{' '}
-          and{' '}
-          <Text style={{ fontFamily: Fonts.bold, color: '#54b0df' }}>
-            Privacy Policy
-          </Text>
-        </Text>
-      </View>
+
+      <Text style={styles.terms}>
+        By continuing, you agree to our{' '}
+        <Text style={styles.link}>Terms of Service</Text> and{' '}
+        <Text style={styles.link}>Privacy Policy</Text>
+      </Text>
     </View>
   );
 };
@@ -73,45 +62,55 @@ const LandingScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: Colors.light,
-    padding: 20,
-    margin: 10,
+    paddingHorizontal: wp(5),
+    paddingVertical: hp(3),
+  },
+  Container1:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  textContainer: {
+    alignItems: 'center',
+    marginBottom: hp(5),
+  },
+  logo: {
+    width: wp(60),
+    height: wp(60),
+    marginBottom: hp(4),
+  },
+  title: {
+    fontSize: wp(10),
+    fontFamily: Fonts.bold,
+    color: Colors.dark,
+    textAlign: 'center',
+    marginBottom: hp(2),
+  },
+  subtitle: {
+    fontSize: wp(4.5),
+    fontFamily: Fonts.regular,
+    color: Colors.secondary,
+    textAlign: 'center',
+    lineHeight: hp(3),
+  },
+  buttonContainer: {
+    width: '100%',
+    marginTop: hp(6),
   },
   terms: {
     fontFamily: Fonts.regular,
     color: Colors.dark,
-    marginTop: 20,
+    marginTop: hp(3),
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: wp(3.5),
   },
-  logo: {
-    width: 250,
-    height: 250,
-    marginBottom: 40,
-    marginTop: -60,
-  },
-  title: {
-    fontSize: 40,
+  link: {
     fontFamily: Fonts.bold,
-    color: Colors.dark,
-    marginBottom: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 22,
-    fontFamily: Fonts.regular,
-    color: Colors.secondary,
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  buttonContainer: {
-    gap: 15,
-    width: '100%',
-    alignItems: 'center',
-    marginTop: 60,
+    color: '#54b0df',
   },
 });
 

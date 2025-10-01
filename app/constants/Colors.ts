@@ -9,11 +9,13 @@ export interface ColorPalette {
   dark: string;
   white: string;
   black: string;
+  lightPrimary:string;
 }
 
 export const Colors: ColorPalette = {
   primary: '#1193d4',
   secondary: '#6C757D',
+  lightPrimary: '#C7E2F0',
   success: '#28A745',
   danger: '#DC3545',
   warning: '#FFC107',
