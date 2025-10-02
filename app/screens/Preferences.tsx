@@ -85,9 +85,9 @@ const Preferences: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleConfirm = () => {
-    navigation.navigate('Home');
-  }
+ const handleConfirm = () => {
+  navigation.navigate('MainApp'); // Changed from 'Home' to 'MainApp'
+}
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

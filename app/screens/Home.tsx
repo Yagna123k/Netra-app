@@ -7,19 +7,17 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Eye, Settings, Palette, Ear, ChevronRight, Sun, Clock, Bell } from 'lucide-react-native';
 import { wp } from "../helpers/common";
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
-interface Props {
-    navigation: HomeScreenNavigationProp;
-}
 
-const Home: React.FC<Props> = ({ navigation }) => {
+const Home: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [blueLightFilter, setBlueLightFilter] = useState(false);
     const [activeBreakReminder, setActiveBreakReminder] = useState(true);
 

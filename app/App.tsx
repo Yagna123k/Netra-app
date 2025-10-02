@@ -2,6 +2,8 @@ import 'react-native-gesture-handler'; // MUST BE FIRST IMPORT
 import React, { JSX } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialIcons from '@react-native-vector-icons/material-icons';
 import LandingScreen from './screens/LandingScreen';
 import { RootStackParamList } from './types/navigation';
 import SightDetails from './screens/SightDetails';
@@ -12,10 +14,58 @@ import Home from './screens/Home';
 import EyePreferences from './screens/EyePreferences';
 import SampleEyeTest from './screens/SampleEyeTest';
 import HearingTest from './screens/HearingTest';
+import Profile from './screens/Profile';
 
 console.log('🔧 App starting with gesture handler'); // Debug log
 
 const Stack = createStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
+
+// Create Tab Navigator Component
+const MainTabs = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: '#4F46E5',
+        tabBarInactiveTintColor: '#6B7280',
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 1,
+          borderTopColor: '#E5E7EB',
+          paddingBottom: 8,
+          paddingTop: 8,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
+      }}
+    >
+      <Tab.Screen
+        name="HomeTab"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" size={size} color={color} />
+          ),
+          tabBarLabel: 'Home',
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person" size={size} color={color} />
+          ),
+          tabBarLabel: 'Profile',
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const App = (): JSX.Element => {
   console.log('🚀 App component mounted with navigation - TypeScript'); // Debug log
@@ -107,11 +157,11 @@ const App = (): JSX.Element => {
             }
           }}
         />
+        {/* Main Tab Navigator - This is where your Home screen with tabs will be */}
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="MainApp"
+          component={MainTabs}
           options={{
-            title: 'Home',
             headerShown: false,
           }}
         />
@@ -156,6 +206,25 @@ const App = (): JSX.Element => {
           component={HearingTest}
           options={{
             title: 'Hearing Test',
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20,
+
+            }
+          }}
+        />
+        {/* Keep individual Profile screen for navigation from other places if needed */}
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            title: 'Profile',
             headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {
