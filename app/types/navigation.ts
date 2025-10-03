@@ -10,6 +10,7 @@ export type RootStackParamList = {
   SampleEyeTest: undefined;
   HearingTest: undefined;
   Profile: undefined;
+  EditProfile: undefined;
 };
 
 console.log('🧭 Navigation types defined');

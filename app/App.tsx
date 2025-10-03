@@ -15,6 +15,7 @@ import EyePreferences from './screens/EyePreferences';
 import SampleEyeTest from './screens/SampleEyeTest';
 import HearingTest from './screens/HearingTest';
 import Profile from './screens/Profile';
+import EditProfile from './screens/EditProfile';
 
 console.log('🔧 App starting with gesture handler'); // Debug log
 
@@ -44,7 +45,7 @@ const MainTabs = () => {
       }}
     >
       <Tab.Screen
-        name="HomeTab"
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -54,9 +55,20 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileTab"
+        name="Profile"
         component={Profile}
         options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#fff',
+
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+
+          },
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" size={size} color={color} />
           ),
@@ -225,6 +237,14 @@ const App = (): JSX.Element => {
           component={Profile}
           options={{
             title: 'Profile',
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            title: 'Edit Profile',
             headerShown: true,
             headerTitleAlign: 'center',
             headerStyle: {

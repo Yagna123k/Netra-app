@@ -1,15 +1,179 @@
-
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  User,
+  CreditCard as Edit2,
+  Eye,
+  Settings,
+  ChevronRight,
+  Calendar,
+  Mail,
+  Phone,
+  Activity,
+} from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
 
-const Profile = () => {
+const Profile: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const profileInfo = [
+    { icon: Mail, label: 'Email', value: 'user@example.com' },
+    { icon: Calendar, label: 'Age', value: 'Not set' },
+    { icon: Phone, label: 'Phone', value: 'Not set' },
+  ];
+
+  const quickActions = [
+    {
+      id: 'edit-profile',
+      title: 'Edit Profile',
+      description: 'Update your personal information',
+      icon: Edit2,
+      color: '#4F46E5',
+      bgColor: '#EEF2FF',
+      route: 'EditProfile',
+    },
+    {
+      id: 'eye-test',
+      title: 'Update Vision Preferences',
+      description: 'Take eye test to refresh your settings',
+      icon: Eye,
+      color: '#059669',
+      bgColor: '#ECFDF5',
+      route: 'EyeTest',
+    },
+    {
+      id: 'eye-preferences',
+      title: 'Manage Preferences',
+      description: 'Adjust your comfort settings',
+      icon: Settings,
+      color: '#D97706',
+      bgColor: '#FFFBEB',
+      route: 'EyePreferences',
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Profile</Text>
-        <Text style={styles.subtitle}>Profile screen coming soon...</Text>
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+
+        {/* Profile Card */}
+        <View style={styles.profileCard}>
+          <View style={styles.avatarContainer}>
+            <View style={styles.avatar}>
+              <User size={48} color="#4F46E5" strokeWidth={2} />
+            </View>
+            <TouchableOpacity
+              style={styles.editAvatarButton}
+              onPress={() => navigation.navigate('EditProfile')}
+              activeOpacity={0.7}
+            >
+              <Edit2 size={16} color="#FFFFFF" strokeWidth={2} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.name}>Your Name</Text>
+          <Text style={styles.subtitle}>Netra Member</Text>
+        </View>
+
+        {/* Personal Information */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <View style={styles.infoCard}>
+            {profileInfo.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <View key={index} style={styles.infoRow}>
+                  <View style={styles.infoLeft}>
+                    <View style={styles.infoIconContainer}>
+                      <Icon size={18} color="#6B7280" strokeWidth={2} />
+                    </View>
+                    <Text style={styles.infoLabel}>{item.label}</Text>
+                  </View>
+                  <Text style={styles.infoValue}>{item.value}</Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <TouchableOpacity
+                key={action.id}
+                style={styles.actionCard}
+                onPress={() => navigation.navigate(action.route as never)}
+                activeOpacity={0.7}
+              >
+                <View
+                  style={[
+                    styles.actionIconContainer,
+                    { backgroundColor: action.bgColor },
+                  ]}
+                >
+                  <Icon size={24} color={action.color} strokeWidth={2} />
+                </View>
+                <View style={styles.actionContent}>
+                  <Text style={styles.actionTitle}>{action.title}</Text>
+                  <Text style={styles.actionDescription}>
+                    {action.description}
+                  </Text>
+                </View>
+                <ChevronRight size={20} color="#9CA3AF" strokeWidth={2} />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Test History */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Test History</Text>
+          <View style={styles.historyCard}>
+            <View style={styles.historyHeader}>
+              <Activity size={24} color="#4F46E5" strokeWidth={2} />
+              <Text style={styles.historyTitle}>Recent Activity</Text>
+            </View>
+            <View style={styles.historyEmpty}>
+              <Text style={styles.historyEmptyText}>No test history yet</Text>
+              <Text style={styles.historyEmptySubtext}>
+                Complete tests to see your history here
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Current Vision Settings */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Current Vision Settings</Text>
+          <View style={styles.settingsCard}>
+            <View style={styles.settingItem}>
+              <Text style={styles.settingLabel}>Font Size</Text>
+              <Text style={styles.settingValue}>16px</Text>
+            </View>
+            <View style={styles.settingDivider} />
+            <View style={styles.settingItem}>
+              <Text style={styles.settingLabel}>Contrast Level</Text>
+              <Text style={styles.settingValue}>Normal</Text>
+            </View>
+            <View style={styles.settingDivider} />
+            <View style={styles.settingItem}>
+              <Text style={styles.settingLabel}>Blue Light Filter</Text>
+              <Text style={styles.settingValue}>Off</Text>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -19,22 +183,211 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9FAFB',
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  scrollContent: {
+    paddingBottom: 24,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 24,
+    backgroundColor: '#FFFFFF',
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '700',
     color: '#111827',
-    marginBottom: 8,
+  },
+  profileCard: {
+    alignItems: 'center',
+    paddingVertical: 32,
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginBottom: 16,
+  },
+  avatar: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: '#EEF2FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editAvatarButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#4F46E5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: '#FFFFFF',
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 4,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#6B7280',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  infoCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  infoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  infoIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: '#F9FAFB',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoLabel: {
+    fontSize: 14,
     color: '#6B7280',
     fontWeight: '500',
+  },
+  infoValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  actionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  actionIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  actionContent: {
+    flex: 1,
+  },
+  actionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 4,
+  },
+  actionDescription: {
+    fontSize: 13,
+    color: '#6B7280',
+  },
+  historyCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  historyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 16,
+  },
+  historyTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  historyEmpty: {
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
+  historyEmptyText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6B7280',
+    marginBottom: 4,
+  },
+  historyEmptySubtext: {
+    fontSize: 13,
+    color: '#9CA3AF',
+  },
+  settingsCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  settingLabel: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  settingValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  settingDivider: {
+    height: 1,
+    backgroundColor: '#F3F4F6',
   },
 });
 

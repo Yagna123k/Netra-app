@@ -6,6 +6,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
 import { RouteProp } from "@react-navigation/native";
 import { hp, wp } from "../helpers/common";
+import { Colors } from "../constants/Colors";
 
 type VisionProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, "VisionProfile">;
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: Colors.light,
     paddingHorizontal: wp(5),
     paddingVertical: hp(3),
   },
