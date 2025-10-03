@@ -22,6 +22,12 @@ console.log('🔧 App starting with gesture handler'); // Debug log
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
+const HomeIcon = ({ color, size }: { color: string; size: number }) => (
+  <MaterialIcons name="home" size={size} color={color} />
+);
+const ProfileIcon = ({ color, size }: { color: string; size: number }) => (
+  <MaterialIcons name="person" size={size} color={color} />
+);
 // Create Tab Navigator Component
 const MainTabs = () => {
   return (
@@ -48,9 +54,7 @@ const MainTabs = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="home" size={size} color={color} />
-          ),
+          tabBarIcon: HomeIcon,
           tabBarLabel: 'Home',
         }}
       />
@@ -69,9 +73,7 @@ const MainTabs = () => {
             fontSize: 20,
 
           },
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person" size={size} color={color} />
-          ),
+          tabBarIcon: ProfileIcon,
           tabBarLabel: 'Profile',
         }}
       />

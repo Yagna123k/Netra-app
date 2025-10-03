@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
-import { ArrowLeft, Sun, Moon, Droplet, Bell, Monitor, Minus, Plus } from 'lucide-react-native';
+import { Sun, Moon, Droplet, Bell, Monitor, Minus, Plus } from 'lucide-react-native';
 import { Colors } from '../constants/Colors';
 
-type EyePreferencesScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'EyePreferences'
->;
 
-interface Props {
-  navigation: EyePreferencesScreenNavigationProp;
-}
-
-const EyePreferences: React.FC<Props> = ({ navigation }) => {
+const EyePreferences: React.FC = () => {
   const [fontSize, setFontSize] = useState(16);
   const [contrastLevel, setContrastLevel] = useState<'low' | 'normal' | 'high'>('normal');
   const [blueLightFilter, setBlueLightFilter] = useState(false);

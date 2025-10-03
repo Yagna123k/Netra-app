@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { ArrowLeft, Ear, CircleCheck as CheckCircle, Volume2, VolumeX } from 'lucide-react-native';
+import { Ear, CircleCheck as CheckCircle, Volume2, VolumeX } from 'lucide-react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
 

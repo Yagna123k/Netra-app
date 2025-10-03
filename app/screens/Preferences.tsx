@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
-  Pressable,
   TextInput
 } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";

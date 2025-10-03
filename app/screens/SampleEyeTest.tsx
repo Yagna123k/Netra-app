@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ArrowLeft, Eye, CheckCircle } from 'lucide-react-native';
+import { Eye, CheckCircle } from 'lucide-react-native';
 import { RootStackParamList } from '../types/navigation';
 import { Colors } from '../constants/Colors';
-import { hp, wp } from '../helpers/common';
 
 type EyeTestScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
