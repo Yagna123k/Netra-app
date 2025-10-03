@@ -62,6 +62,19 @@ const EditProfile: React.FC = () => {
       return;
     }
 
+    // Email validation (basic)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
+    // Phone number validation (basic)
+    if (phoneNumber && phoneNumber.length < 10) {
+      Alert.alert('Error', 'Please enter a valid phone number');
+      return;
+    }
+
     setIsSaving(true);
 
     try {
@@ -69,8 +82,8 @@ const EditProfile: React.FC = () => {
         name,
         age,
         email,
-        gender,
-        eyeSight,
+        gender: '', // Add gender field if needed
+        eyeSight: { leftEye: '', rightEye: '' }, // Add eyeSight if needed
         phoneNumber,
       };
 
@@ -156,7 +169,7 @@ const EditProfile: React.FC = () => {
 
           <View style={visionProfileStyles.eyeContainer}>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Left Eye</Text>
+              <Text style={styles.label}>Left Eye Sight</Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.leftEye}
@@ -170,7 +183,7 @@ const EditProfile: React.FC = () => {
               />
             </View>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Right Eye</Text>
+              <Text style={styles.label}>Right Eye Sight</Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.rightEye}
