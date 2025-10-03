@@ -62,6 +62,16 @@ const EditProfile: React.FC = () => {
       return;
     }
 
+    if (!gender.trim()) {
+      Alert.alert('Error', 'Please enter your gender');
+      return;
+    }
+
+    if (!eyeSight.leftEye.trim() || !eyeSight.rightEye.trim()) {
+      Alert.alert('Error', 'Please enter your eye sight');
+      return;
+    }
+
     setIsSaving(true);
 
     try {
@@ -95,7 +105,7 @@ const EditProfile: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Full Name *</Text>
+            <Text style={styles.label}>Full Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -120,7 +130,7 @@ const EditProfile: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Age</Text>
+            <Text style={styles.label}>Age <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={age}
@@ -132,7 +142,7 @@ const EditProfile: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Gender</Text>
+            <Text style={styles.label}>Gender <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={gender}
@@ -156,7 +166,7 @@ const EditProfile: React.FC = () => {
 
           <View style={visionProfileStyles.eyeContainer}>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Left Eye</Text>
+              <Text style={styles.label}>Left Eye Sight <Text style={styles.required}>*</Text></Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.leftEye}
@@ -170,7 +180,7 @@ const EditProfile: React.FC = () => {
               />
             </View>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Right Eye</Text>
+              <Text style={styles.label}>Right Eye Sight <Text style={styles.required}>*</Text></Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.rightEye}
@@ -227,6 +237,9 @@ const styles = StyleSheet.create({
   },
   form: {
     paddingHorizontal: 20,
+  },
+  required: {
+    color: 'red'
   },
   inputGroup: {
     marginBottom: 20,

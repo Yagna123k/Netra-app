@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/ui/Button";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -11,7 +11,7 @@ import { Colors } from "../constants/Colors";
 type VisionProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, "VisionProfile">;
   route: RouteProp<RootStackParamList, "VisionProfile">;
-};
+}
 
 const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
   const { mode } = route.params ?? { mode: "manual" };
@@ -23,6 +23,56 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
   const [rightEye, setRightEye] = useState("");
 
   const handleNext = async () => {
+    // Validation logic
+    if (!name.trim()) {
+      Alert.alert("Error", "Please enter your name");
+      return;
+    }
+
+    if (!age.trim()) {
+      Alert.alert("Error", "Please enter your age");
+      return;
+    }
+
+    // Validate age is a number and within reasonable range
+    const ageNum = parseInt(age, 10);
+    if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
+      Alert.alert("Error", "Please enter a valid age between 1 and 120");
+      return;
+    }
+
+    if (!gender.trim()) {
+      Alert.alert("Error", "Please enter your gender");
+      return;
+    }
+
+    // Validate eye measurements if in manual mode
+    if (mode === "manual") {
+      if (!leftEye.trim()) {
+        Alert.alert("Error", "Please enter your left eye sight");
+        return;
+      }
+
+      if (!rightEye.trim()) {
+        Alert.alert("Error", "Please enter your right eye sight");
+        return;
+      }
+
+      // Basic validation for eye measurements (should be numbers)
+      const leftEyeNum = parseFloat(leftEye);
+      const rightEyeNum = parseFloat(rightEye);
+
+      if (isNaN(leftEyeNum)) {
+        Alert.alert("Error", "Please enter a valid left eye sight");
+        return;
+      }
+
+      if (isNaN(rightEyeNum)) {
+        Alert.alert("Error", "Please enter a valid right eye sight");
+        return;
+      }
+    }
+
     try {
       const visionData = {
         name,
@@ -43,6 +93,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       }
     } catch (error) {
       console.error("❌ Error saving vision data:", error);
+      Alert.alert("Error", "Failed to save data. Please try again.");
     }
   };
 
@@ -51,7 +102,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       <View style={styles.inputGroup}>
         <View style={styles.inputContainer}>
           <View>
-            <Text style={styles.inputText}>Name</Text>
+            <Text style={styles.inputText}>Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -65,7 +116,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           </View>
 
           <View>
-            <Text style={styles.inputText}>Age</Text>
+            <Text style={styles.inputText}>Age <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={age}
@@ -80,7 +131,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           </View>
 
           <View>
-            <Text style={styles.inputText}>Gender</Text>
+            <Text style={styles.inputText}>Gender <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={gender}
@@ -95,7 +146,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           {mode === "manual" && (
             <View style={styles.eyeContainer}>
               <View style={styles.eyeInputWrapper}>
-                <Text style={styles.inputText}>Left Eye</Text>
+                <Text style={styles.inputText}>Left Eye Sight <Text style={styles.required}>*</Text></Text>
                 <TextInput
                   style={styles.input}
                   value={leftEye}
@@ -109,7 +160,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
                 />
               </View>
               <View style={styles.eyeInputWrapper}>
-                <Text style={styles.inputText}>Right Eye</Text>
+                <Text style={styles.inputText}>Right Eye Sight <Text style={styles.required}>*</Text></Text>
                 <TextInput
                   style={styles.input}
                   value={rightEye}
@@ -175,6 +226,9 @@ export const styles = StyleSheet.create({
   eyeInputWrapper: {
     flex: 1,
     marginHorizontal: wp(2),
+  },
+  required: {
+    color: 'red',
   },
   inputContainer: {},
 });
