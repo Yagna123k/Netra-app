@@ -1,83 +1,106 @@
 # Netra
-**"See Clearly. Live Fully."**
 
-*Smart, personalized vision wellness for effortless digital experiences.*
-
----
-
-## **Table of Contents**
-
-1. [Project Overview](#project-overview)
-2. [Core Features](#core-features)
-3. [User Flow](#user-flow)
-4. [Tech Stack](#tech-stack)
-5. [Installation & Setup](#installation--setup)
-6. [Demo & Screenshots](#demo--screenshots)
-7. [Usage](#usage)
-8. [Roadmap](#roadmap)
-9. [Contributing](#contributing)
-10. [License](#license)
-11. [Contact](#contact)
+**"The Future of Vision-Friendly Technology."**
 
 ---
 
-## 📌 Project Overview
-Netra is a **smart, personalized vision wellness app** designed to make digital experiences **effortless and comfortable** for users with eyesight challenges, especially elderly users. It adapts your device to your unique vision needs, reducing eye strain and improving readability across apps.
+## The Vision
 
-**Our Mission:**
-To empower individuals with vision challenges by creating a seamless, personalized digital experience. We aim to reduce eye strain, improve readability, and promote overall wellness through smart technology and accessibility tools.
+Every day, millions of people struggle to use technology that wasn’t designed for their eyes. From elderly parents squinting at tiny fonts to young professionals battling eye strain, digital life is becoming harder - not easier.
 
-**Who is Netra for?**
-- Elderly users
-- Individuals with low vision
-- Anyone experiencing eye strain or discomfort while using digital devices
+**Netra changes that.**
 
----
+We are building the first **personalized vision wellness app** that doesn’t just *adjust settings* - it *adapts the entire digital experience* to the way **you** see the world. Netra calibrates your device to your unique eyesight, creating effortless readability, reducing strain, and helping people live more comfortably in our screen-first world.
 
-## ✨ Core Features
+Imagine a phone that understands your vision:
 
-### 1️⃣ Onboarding & Calibration
-- Manual input of prescription values
-- Quick vision test for font size & readability
-- Optional syncing from smart wearables *(future update)*
+* Fonts that resize *just right* for your eyes.
+* Contrast that adapts to the sunlight outside.
+* Gentle reminders to blink, stretch, and rest before strain sets in.
+* A digital environment where accessibility isn’t an afterthought, but the **default.**
 
-### 2️⃣ Eye Personalization
-- Dynamic font size and spacing adjustments
-- Custom profiles (Reading Mode, Outdoor Mode)
-- Contrast booster for low-vision users
-- Night mode optimization
+Our mission is simple yet powerful:
+👉 To **give clarity back to the digital generation** - so that whether you’re 18 or 80, technology empowers you instead of exhausting you.
 
-### 3️⃣ Eye Comfort Tools
-- Blue-light filter toggle
-- Screen distance & posture alerts
-- 20-20-20 rule reminders
-
-### 4️⃣ Bonus Features (Add-ons)
-- Color blindness test
-- Hearing test & volume guidance
+With **AI-driven personalization, accessibility-first design, and wellness insights**, Netra is reimagining how we interact with screens. Because vision is more than seeing - it’s living fully.
 
 ---
 
-## 🔄 User Flow
-1. **Install & Launch** → Onboarding screen
-2. **Choose Calibration** → Manual / Eye test
-3. **Personalization** → App calculates ideal font & contrasts
-4. **Apply Settings** → Adjusts device where possible
-5. **Ongoing Guidance** → Break reminders, adaptive tips
+## ✨ What Makes Netra Different?
+
+Unlike generic accessibility features, **Netra learns you.**
+It calibrates, adapts, and evolves - creating an experience as unique as your eyesight.
+
+* 📏 **Smart Calibration** → Quick eye test or manual prescription input to tailor your device instantly.
+* 🔍 **Personalized Clarity** → Dynamic fonts, contrasts, and custom profiles for reading, outdoors, or night use.
+* 🌙 **Comfort First** → Blue-light filter, screen distance alerts, and eye-friendly reminders.
+* 🎨 **Beyond Vision** (future add-ons) → Color blindness tests, hearing guidance, and multi-sensory wellness tools.
+
+**Netra isn’t an app you use. It’s an app that reshapes how you use every other app.**
 
 ---
 
-## 🛠️ Tech Stack
+## 🔄 User Journey
 
-| Layer      | Technology          | Notes                          |
-|------------|---------------------|--------------------------------|
-| Frontend   | React Native        | Cross-platform, accessible UI  |
-| Backend    | Firebase / Supabase | Profile storage, analytics     |
-| AI/ML      | TensorFlow Lite     | Adaptive font scaling          |
-| APIs       | Android/iOS APIs    | Font, contrast, display tweaks |
-| Extras     | Expo, RNEUI         | Rapid dev, offline support     |
+1. **Launch Netra** → A guided, effortless onboarding.
+2. **Calibrate** → Manual input or quick vision test.
+3. **Personalize** → AI adapts fonts, contrasts, and layouts to your comfort.
+4. **Apply Everywhere** → Settings flow into your digital experience.
+5. **Live Comfortably** → With ongoing reminders and adaptive tweaks.
 
 ---
+
+## 🛠️ Behind the Curtain (Tech)
+
+Netra combines **human-centered design** with **cutting-edge AI**:
+
+| Layer    | Technology          | Why it Matters                           |
+| -------- | ------------------- | ---------------------------------------- |
+| Frontend | React Native        | Beautiful, accessible cross-platform UI  |
+| Backend  | Firebase / Supabase | Secure, scalable personalization data    |
+| AI/ML    | TensorFlow Lite     | Adaptive scaling + smart recommendations |
+| APIs     | Android/iOS APIs    | System-level accessibility integration   |
+| Extras   | Expo, RNEUI         | Rapid dev, smooth offline experience     |
+
+---
+
+## 🚀 Roadmap
+
+**Phase 1: Clear Start (MVP)**
+✔ Vision calibration & personalization
+✔ Comfort tools & night mode
+
+**Phase 2: Deeper Insights**
+🔹 Adaptive ML-driven scaling
+🔹 Eye strain analytics & insights
+🔹 Multi-user family profiles
+
+**Phase 3: Expanding Horizons**
+🔹 Wearable & AR integration
+🔹 Advanced color/hearing tests
+🔹 Healthcare partnerships & accessibility programs
+
+---
+
+## 🌍 Why Now?
+
+We are living in a **screen-first world**, and the demand for accessibility has never been higher.
+
+* Global screen time is at record highs.
+* 2.2B people worldwide live with vision impairment.
+* Elderly populations are growing rapidly, yet underserved by digital-first products.
+
+**Netra is not a “nice-to-have.” It’s inevitable.**
+
+---
+
+## 🤝 Contributing
+
+We’re on a mission to redefine digital wellness - together.
+
+* Fork → Build → Pull Request.
+* Share your ideas, your designs, your vision.
+* Help us make clarity the new standard.
 
 ## 📥 Installation & Setup
 ```bash
@@ -85,7 +108,7 @@ To empower individuals with vision challenges by creating a seamless, personaliz
 git clone https://github.com/Yagna123k/Netra-app.git
 
 # Move into project directory
-cd Netra
+cd Netra-app
 
 # Install dependencies
 npm install
@@ -94,72 +117,15 @@ npm install
 npx run android
 ```
 
-> Android-first due to system-level accessibility APIs. iOS adjustments available in-app.
-
 ---
 
-## **Demo & Screenshots**
+## 📩 Let’s Talk
 
-*(Add screenshots of onboarding, calibration, adaptive font adjustments, night mode, and eye comfort dashboard here)*
+  🌐 **Website:** [www.netraapp.com](#)
 
----
+📩 **Email:** [contact@netraapp.com](mailto:contact@netraapp.com)
 
-## **Usage**
+🔗 **Socials:** @NetraApp
 
-* **Quick Start:**
 
-  1. Launch app → Choose calibration method
-  2. Complete vision test
-  3. Apply personalized settings
-  4. Enjoy optimized device experience
-
-* **Bonus:**
-
-  * Color blindness & hearing checks
-  * Insights for minor sensory enhancements
-
----
-
-## **Roadmap**
-
-**Phase 1:** MVP (Vision-focused)
-
-* Eye calibration & personalization
-* Comfort tools & night mode
-
-**Phase 2:** Premium & Insights
-
-* Adaptive ML font scaling
-* Multi-user profiles
-* Eye strain analytics
-
-**Phase 3:** Expansion
-
-* Optional color blindness & hearing test improvements
-* Wearable & AR integration
-* Partnerships with healthcare & accessibility programs
-
----
-
-## **Contributing**
-
-We welcome contributions!
-
-* Fork the repo → `git checkout -b feature-name`
-* Commit → `git commit -m "Add feature"`
-* Push → `git push origin feature-name`
-* Create a Pull Request
-
----
-
-## **License**
-
-MIT License © 2025 **Netra**
-
----
-
-## **Contact**
-
-* **Website / Landing Page:** [www.netraapp.com](#)
-* **Email:** [contact@netraapp.com](mailto:contact@netraapp.com)
-* **LinkedIn / Twitter:** @NetraApp
+**Netra  -  The Future of Vision-Friendly Technology.**
