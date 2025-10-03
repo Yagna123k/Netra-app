@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   User,
-  CreditCard as Edit2,
+  Pencil as Edit2,
   Eye,
   Settings,
   ChevronRight,
@@ -18,17 +18,51 @@ import {
   Phone,
   Activity,
 } from 'lucide-react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile: React.FC = () => {
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  // Load profile data from AsyncStorage when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      const loadProfileData = async () => {
+        try {
+          const profileData = await AsyncStorage.getItem('profileData');
+          if (profileData) {
+            const parsedData = JSON.parse(profileData);
+            setName(parsedData.name);
+            setAge(parsedData.age);
+            setEmail(parsedData.email);
+            setPhoneNumber(parsedData.phoneNumber);
+          } else {
+            // Optional: handle case where profile data is not found
+            setName('');
+            setAge('');
+            setEmail('');
+            setPhoneNumber('');
+          }
+        } catch (e) {
+          console.error('Failed to load profile data', e);
+        }
+      };
+
+      loadProfileData();
+
+    }, [])
+  );
 
   const profileInfo = [
-    { icon: Mail, label: 'Email', value: 'user@example.com' },
-    { icon: Calendar, label: 'Age', value: 'Not set' },
-    { icon: Phone, label: 'Phone', value: 'Not set' },
+    { icon: Mail, label: 'Email', value: email ?? 'Not set' },
+    { icon: Calendar, label: 'Age', value: age ?? 'Not set' },
+    { icon: Phone, label: 'Phone', value: phoneNumber ?? 'Not set' },
   ];
 
   const quickActions = [
@@ -79,7 +113,7 @@ const Profile: React.FC = () => {
               <Edit2 size={16} color="#FFFFFF" strokeWidth={2} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.name}>Your Name</Text>
+          <Text style={styles.name}>{name}</Text>
           <Text style={styles.subtitle}>Netra Member</Text>
         </View>
 

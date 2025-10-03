@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Save } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types/navigation';
+import { styles as visionProfileStyles } from './VisionProfile';
 
 const EditProfile: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -20,8 +22,34 @@ const EditProfile: React.FC = () => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [eyeSight, setEyeSight] = useState({
+    leftEye: '',
+    rightEye: '',
+  });
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  // Load profile data from AsyncStorage
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const profileData = await AsyncStorage.getItem('profileData');
+        if (profileData) {
+          const parsedData = JSON.parse(profileData);
+          setName(parsedData.name);
+          setAge(parsedData.age);
+          setEmail(parsedData.email);
+          setGender(parsedData.gender);
+          setEyeSight(parsedData.eyeSight);
+          setPhoneNumber(parsedData.phoneNumber);
+        }
+      } catch (e) {
+        console.error('Failed to load profile data', e);
+      }
+    };
+    loadProfileData();
+  }, []);
 
   const handleSave = async () => {
     if (!name.trim()) {
@@ -37,11 +65,16 @@ const EditProfile: React.FC = () => {
     setIsSaving(true);
 
     try {
-      // simulate API delay
-    //   await new Promise(resolve => setTimeout(
-    //     // resolve,
-    //     1000
-    //   ));
+      const profileData = {
+        name,
+        age,
+        email,
+        gender,
+        eyeSight,
+        phoneNumber,
+      };
+
+      await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
 
       Alert.alert('Success', 'Profile updated successfully', [
         {
@@ -58,7 +91,6 @@ const EditProfile: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
       {/* Form */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.form}>
@@ -100,6 +132,17 @@ const EditProfile: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
+            <Text style={styles.label}>Gender</Text>
+            <TextInput
+              style={styles.input}
+              value={gender}
+              onChangeText={setGender}
+              placeholder="Enter your gender"
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
             <Text style={styles.label}>Phone Number</Text>
             <TextInput
               style={styles.input}
@@ -111,16 +154,47 @@ const EditProfile: React.FC = () => {
             />
           </View>
 
-          <View style={styles.infoCard}>
-            <Text style={styles.infoText}>
-              * Required fields. Your information is kept private and secure.
-            </Text>
+          <View style={visionProfileStyles.eyeContainer}>
+            <View style={visionProfileStyles.eyeInputWrapper}>
+              <Text style={styles.label}>Left Eye</Text>
+              <TextInput
+                style={styles.input}
+                value={eyeSight.leftEye}
+                onChangeText={(text) => setEyeSight({ ...eyeSight, leftEye: text })}
+                placeholder="-2.25"
+                placeholderTextColor="#b1b1b1"
+                keyboardType="numeric"
+                inputMode="numeric"
+                accessible
+                accessibilityLabel="Left Eye Input"
+              />
+            </View>
+            <View style={visionProfileStyles.eyeInputWrapper}>
+              <Text style={styles.label}>Right Eye</Text>
+              <TextInput
+                style={styles.input}
+                value={eyeSight.rightEye}
+                onChangeText={(text) => setEyeSight({ ...eyeSight, rightEye: text })}
+                placeholder="-2.50"
+                placeholderTextColor="#b1b1b1"
+                keyboardType="numeric"
+                inputMode="numeric"
+                accessible
+                accessibilityLabel="Right Eye Input"
+              />
+            </View>
           </View>
+
         </View>
       </ScrollView>
 
       {/* Footer */}
       <View style={styles.footer}>
+        <View style={styles.infoCard}>
+          <Text style={styles.infoText}>
+            * Required fields. Your information is kept private and secure.
+          </Text>
+        </View>
         <TouchableOpacity
           style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
           onPress={handleSave}
@@ -139,113 +213,83 @@ const EditProfile: React.FC = () => {
 
 export default EditProfile;
 
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//     },
-// });
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#F9FAFB',
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-      paddingVertical: 16,
-      backgroundColor: '#FFFFFF',
-      borderBottomWidth: 1,
-      borderBottomColor: '#E5E7EB',
-    },
-    backButton: {
-      width: 40,
-      height: 40,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    headerTitle: {
-      fontSize: 18,
-      fontWeight: '700',
-      color: '#111827',
-    },
-    placeholder: {
-      width: 40,
-    },
-    scrollContent: {
-      paddingBottom: 100,
-    },
-    form: {
-      paddingHorizontal: 20,
-      paddingTop: 24,
-    },
-    inputGroup: {
-      marginBottom: 20,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: '#374151',
-      marginBottom: 8,
-    },
-    input: {
-      backgroundColor: '#FFFFFF',
-      borderRadius: 12,
-      paddingHorizontal: 16,
-      paddingVertical: 14,
-      fontSize: 16,
-      color: '#111827',
-      borderWidth: 1,
-      borderColor: '#E5E7EB',
-    },
-    infoCard: {
-      backgroundColor: '#EEF2FF',
-      borderRadius: 12,
-      padding: 16,
-      marginTop: 8,
-    },
-    infoText: {
-      fontSize: 13,
-      color: '#4338CA',
-      lineHeight: 18,
-    },
-    footer: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: '#FFFFFF',
-      paddingHorizontal: 20,
-      paddingVertical: 16,
-      borderTopWidth: 1,
-      borderTopColor: '#E5E7EB',
-    },
-    saveButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 8,
-      backgroundColor: '#4F46E5',
-      borderRadius: 12,
-      paddingVertical: 16,
-      shadowColor: '#4F46E5',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 8,
-      elevation: 4,
-    },
-    saveButtonDisabled: {
-      backgroundColor: '#9CA3AF',
-      shadowOpacity: 0,
-    },
-    saveButtonText: {
-      fontSize: 16,
-      fontWeight: '700',
-      color: '#FFFFFF',
-    },
-  });
-  
+  container: {
+    flex: 1,
+    marginTop: -20,
+    backgroundColor: '#F9FAFB',
+  },
+  placeholder: {
+    width: 40,
+  },
+  scrollContent: {
+    paddingBottom: 100,
+  },
+  form: {
+    paddingHorizontal: 20,
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#374151',
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: '#111827',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  infoCard: {
+    backgroundColor: '#EEF2FF',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 0,
+    marginBottom: 10
+  },
+  infoText: {
+    fontSize: 13,
+    color: '#4338CA',
+    lineHeight: 18,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+  },
+  saveButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#4F46E5',
+    borderRadius: 12,
+    paddingVertical: 16,
+    shadowColor: '#4F46E5',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  saveButtonDisabled: {
+    backgroundColor: '#9CA3AF',
+    shadowOpacity: 0,
+  },
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+});

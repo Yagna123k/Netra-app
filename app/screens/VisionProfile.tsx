@@ -28,11 +28,13 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
         name,
         age,
         gender,
-        leftEye: mode === "manual" ? leftEye : null,
-        rightEye: mode === "manual" ? rightEye : null,
+        eyeSight: {
+          leftEye: mode === "manual" ? leftEye : null,
+          rightEye: mode === "manual" ? rightEye : null,
+        },
       };
 
-      await AsyncStorage.setItem("visionData", JSON.stringify(visionData));
+      await AsyncStorage.setItem("profileData", JSON.stringify(visionData));
 
       if (mode === "manual") {
         navigation.navigate("Preferences");
@@ -54,6 +56,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
               style={styles.input}
               value={name}
               onChangeText={setName}
+              autoCorrect={false}
               placeholder="Enter your name"
               placeholderTextColor="#b1b1b1"
               accessible
@@ -133,7 +136,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
 
 export default VisionProfile;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
