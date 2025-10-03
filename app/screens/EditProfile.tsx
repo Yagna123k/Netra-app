@@ -62,16 +62,13 @@ const EditProfile: React.FC = () => {
       return;
     }
 
-    // Email validation (basic)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+    if (!gender.trim()) {
+      Alert.alert('Error', 'Please enter your gender');
       return;
     }
 
-    // Phone number validation (basic)
-    if (phoneNumber && phoneNumber.length < 10) {
-      Alert.alert('Error', 'Please enter a valid phone number');
+    if (!eyeSight.leftEye.trim() || !eyeSight.rightEye.trim()) {
+      Alert.alert('Error', 'Please enter your eye sight');
       return;
     }
 
@@ -82,8 +79,8 @@ const EditProfile: React.FC = () => {
         name,
         age,
         email,
-        gender: '', // Add gender field if needed
-        eyeSight: { leftEye: '', rightEye: '' }, // Add eyeSight if needed
+        gender,
+        eyeSight,
         phoneNumber,
       };
 
@@ -108,7 +105,7 @@ const EditProfile: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Full Name *</Text>
+            <Text style={styles.label}>Full Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -133,7 +130,7 @@ const EditProfile: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Age</Text>
+            <Text style={styles.label}>Age <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={age}
@@ -145,7 +142,7 @@ const EditProfile: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Gender</Text>
+            <Text style={styles.label}>Gender <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={gender}
@@ -169,7 +166,7 @@ const EditProfile: React.FC = () => {
 
           <View style={visionProfileStyles.eyeContainer}>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Left Eye Sight</Text>
+              <Text style={styles.label}>Left Eye Sight <Text style={styles.required}>*</Text></Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.leftEye}
@@ -183,7 +180,7 @@ const EditProfile: React.FC = () => {
               />
             </View>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Right Eye Sight</Text>
+              <Text style={styles.label}>Right Eye Sight <Text style={styles.required}>*</Text></Text>
               <TextInput
                 style={styles.input}
                 value={eyeSight.rightEye}
@@ -240,6 +237,9 @@ const styles = StyleSheet.create({
   },
   form: {
     paddingHorizontal: 20,
+  },
+  required: {
+    color: 'red'
   },
   inputGroup: {
     marginBottom: 20,

@@ -102,7 +102,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       <View style={styles.inputGroup}>
         <View style={styles.inputContainer}>
           <View>
-            <Text style={styles.inputText}>Name</Text>
+            <Text style={styles.inputText}>Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={name}
@@ -116,7 +116,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           </View>
 
           <View>
-            <Text style={styles.inputText}>Age</Text>
+            <Text style={styles.inputText}>Age <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={age}
@@ -131,7 +131,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           </View>
 
           <View>
-            <Text style={styles.inputText}>Gender</Text>
+            <Text style={styles.inputText}>Gender <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               value={gender}
@@ -146,7 +146,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
           {mode === "manual" && (
             <View style={styles.eyeContainer}>
               <View style={styles.eyeInputWrapper}>
-                <Text style={styles.inputText}>Left Eye</Text>
+                <Text style={styles.inputText}>Left Eye Sight <Text style={styles.required}>*</Text></Text>
                 <TextInput
                   style={styles.input}
                   value={leftEye}
@@ -160,7 +160,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
                 />
               </View>
               <View style={styles.eyeInputWrapper}>
-                <Text style={styles.inputText}>Right Eye</Text>
+                <Text style={styles.inputText}>Right Eye Sight <Text style={styles.required}>*</Text></Text>
                 <TextInput
                   style={styles.input}
                   value={rightEye}
@@ -226,6 +226,9 @@ export const styles = StyleSheet.create({
   eyeInputWrapper: {
     flex: 1,
     marginHorizontal: wp(2),
+  },
+  required: {
+    color: 'red',
   },
   inputContainer: {},
 });
