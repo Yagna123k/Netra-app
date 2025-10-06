@@ -28,8 +28,21 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
     { value: "other", label: "Other" },
     { value: "prefer_not_to_say", label: "Prefer not to say" },
   ];
+
+  const calculateFontSize = (
+    baseFontPx: number,
+    leftEyesight: number,
+    rightEyesight: number
+  ): number => {
+    const avgEyesight = (leftEyesight + rightEyesight) / 2;
+    return Math.round(baseFontPx * (1 + Math.abs(avgEyesight) * 0.8) * 10) / 10;
+  };
+
   const handleNext = async () => {
-    // Validation logic
+
+    const leftEyeNum = parseFloat(leftEye);
+    const rightEyeNum = parseFloat(rightEye);
+
     if (!name.trim()) {
       Alert.alert("Error", "Please enter your name");
       return;
@@ -64,10 +77,6 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
         return;
       }
 
-      // Basic validation for eye measurements (should be numbers)
-      const leftEyeNum = parseFloat(leftEye);
-      const rightEyeNum = parseFloat(rightEye);
-
       if (isNaN(leftEyeNum)) {
         Alert.alert("Error", "Please enter a valid left eye sight");
         return;
@@ -91,6 +100,11 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       };
 
       await AsyncStorage.setItem("profileData", JSON.stringify(visionData));
+
+      // Calculating font size based on eye sight.
+      const fontSize = calculateFontSize(14, leftEyeNum, rightEyeNum)
+      await AsyncStorage.setItem('@font_size', fontSize.toString());
+      console.log(fontSize)
 
       if (mode === "manual") {
         navigation.navigate("Preferences");
