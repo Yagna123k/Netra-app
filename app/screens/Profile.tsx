@@ -236,9 +236,9 @@ const styles = StyleSheet.create({
   },
   profileCard: {
     alignItems: 'center',
-    paddingVertical: 32,
+    paddingTop: 32,
     paddingHorizontal: 20,
-    marginBottom: 16,
+    marginBottom:8
   },
   avatarContainer: {
     position: 'relative',

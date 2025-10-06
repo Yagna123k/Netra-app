@@ -219,17 +219,16 @@ const EditProfile: React.FC = () => {
               />
             </View>
           </View>
-
+          <View style={EditScreenStyles.infoCard}>
+            <Text style={EditScreenStyles.infoText}>
+              * Required fields. Your information is kept private and secure.
+            </Text>
+          </View>
         </View>
       </ScrollView>
 
       {/* Footer */}
       <View style={EditScreenStyles.footer}>
-        <View style={EditScreenStyles.infoCard}>
-          <Text style={EditScreenStyles.infoText}>
-            * Required fields. Your information is kept private and secure.
-          </Text>
-        </View>
         <TouchableOpacity
           style={[EditScreenStyles.saveButton, isSaving && EditScreenStyles.saveButtonDisabled]}
           onPress={handleSave}
@@ -307,7 +306,7 @@ export const EditScreenStyles = StyleSheet.create({
     backgroundColor: '#EEF2FF',
     borderRadius: 12,
     padding: 16,
-    marginTop: 0,
+    marginTop: 16,
     marginBottom: 10
   },
   infoText: {
@@ -324,6 +323,7 @@ export const EditScreenStyles = StyleSheet.create({
     paddingVertical: 16,
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
+    backgroundColor:'#ffffff'
   },
   saveButton: {
     flexDirection: 'row',
