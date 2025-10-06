@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
+import { StyleSheet, Text, TextInput, View, Alert, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/ui/Button";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -7,6 +7,7 @@ import { RootStackParamList } from "../types/navigation";
 import { RouteProp } from "@react-navigation/native";
 import { hp, wp } from "../helpers/common";
 import { Colors } from "../constants/Colors";
+import { Picker } from "@react-native-picker/picker";
 
 type VisionProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, "VisionProfile">;
@@ -21,7 +22,12 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
   const [gender, setGender] = useState("");
   const [leftEye, setLeftEye] = useState("");
   const [rightEye, setRightEye] = useState("");
-
+  const GENDER_OPTIONS = [
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
+    { value: "prefer_not_to_say", label: "Prefer not to say" },
+  ];
   const handleNext = async () => {
     // Validation logic
     if (!name.trim()) {
@@ -132,15 +138,30 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
 
           <View>
             <Text style={styles.inputText}>Gender <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              value={gender}
-              onChangeText={setGender}
-              placeholder="Enter your gender"
-              placeholderTextColor="#b1b1b1"
-              accessible
-              accessibilityLabel="Gender Input"
-            />
+            <View style={styles.pickerWrapper}>
+              <Picker
+                selectedValue={gender}
+                onValueChange={(itemValue) => setGender(itemValue)}
+                style={styles.picker}
+                dropdownIconColor="#9CA3AF"
+              >
+                <Picker.Item
+                  key="placeholder"
+                  label="Select Gender"
+                  value=""
+                  color={'#9CA3AF'}
+                  enabled={false}
+                />
+                {GENDER_OPTIONS.map((item) => (
+                  <Picker.Item
+                    key={item.value}
+                    label={item.label}
+                    value={item.value}
+                    color={'#111827'}
+                  />
+                ))}
+              </Picker>
+            </View>
           </View>
 
           {mode === "manual" && (
@@ -218,6 +239,26 @@ export const styles = StyleSheet.create({
   },
   inputGroup: {
     width: "100%",
+  },
+  pickerWrapper: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    overflow: 'hidden',
+    marginBottom: hp(2),
+
+  },
+  picker: {
+    color: '#111827',
+    marginLeft: Platform.OS === 'ios' ? -16 : 8,
+    paddingVertical: Platform.OS === 'android' ? 0 : 0,
+    marginTop: Platform.OS === 'android' ? 0 : 0,
+    backgroundColor: "#f9f9fa",
+    borderRadius: wp(3),
+    fontSize: wp(4),
+    borderWidth: 1,
+    borderColor: "#ccc",
   },
   eyeContainer: {
     flexDirection: "row",

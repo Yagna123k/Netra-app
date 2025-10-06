@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-picker/picker": "^2.11.2",
     "@react-native-vector-icons/material-icons": "^12.3.0",
     "@react-native/new-app-screen": "0.81.4",
     "@react-navigation/bottom-tabs": "^7.4.8",
@@ -21,6 +22,7 @@
     "lucide-react-native": "^0.544.0",
     "react": "19.1.0",
     "react-native": "^0.81.4",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "^2.28.0",
     "react-native-global-font": "^1.0.3",
     "react-native-safe-area-context": "^5.6.1",
