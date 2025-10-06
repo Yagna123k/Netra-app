@@ -28,6 +28,7 @@ const Profile: React.FC = () => {
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [fontSize, setFontSize] = useState(16);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   // Load profile data from AsyncStorage when the screen is focused
@@ -36,6 +37,7 @@ const Profile: React.FC = () => {
       const loadProfileData = async () => {
         try {
           const profileData = await AsyncStorage.getItem('profileData');
+          const fontSizeData = await AsyncStorage.getItem('@font_size');
           if (profileData) {
             const parsedData = JSON.parse(profileData);
             setName(parsedData.name);
@@ -49,6 +51,7 @@ const Profile: React.FC = () => {
             setEmail('');
             setPhoneNumber('');
           }
+          setFontSize(fontSizeData ? parseInt(fontSizeData, 10) : 16);
         } catch (e) {
           console.error('Failed to load profile data', e);
         }
@@ -193,7 +196,7 @@ const Profile: React.FC = () => {
           <View style={styles.settingsCard}>
             <View style={styles.settingItem}>
               <Text style={styles.settingLabel}>Font Size</Text>
-              <Text style={styles.settingValue}>16px</Text>
+              <Text style={styles.settingValue}>{fontSize}px</Text>
             </View>
             <View style={styles.settingDivider} />
             <View style={styles.settingItem}>

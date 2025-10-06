@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
 import {
   View,
   Text,
@@ -7,6 +8,7 @@ import {
   TextInput,
   Alert,
   StyleSheet,
+  Platform // Imported for platform-specific styling
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Save } from 'lucide-react-native';
@@ -15,10 +17,16 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types/navigation';
 import { styles as visionProfileStyles } from './VisionProfile';
+// import DropdownComponent from '../components/ui/Dropdown';
 
 const EditProfile: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
+  const GENDER_OPTIONS = [
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' },
+    { label: 'Other', value: 'Other' },
+    { label: 'Prefer not to say', value: 'Prefer not to say' },
+  ];
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [email, setEmail] = useState('');
@@ -63,7 +71,7 @@ const EditProfile: React.FC = () => {
     }
 
     if (!gender.trim()) {
-      Alert.alert('Error', 'Please enter your gender');
+      Alert.alert('Error', 'Please select your gender'); // Updated message for dropdown
       return;
     }
 
@@ -100,14 +108,14 @@ const EditProfile: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={EditScreenStyles.container}>
       {/* Form */}
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Full Name <Text style={styles.required}>*</Text></Text>
+      <ScrollView contentContainerStyle={EditScreenStyles.scrollContent}>
+        <View style={EditScreenStyles.form}>
+          <View style={EditScreenStyles.inputGroup}>
+            <Text style={EditScreenStyles.label}>Full Name <Text style={EditScreenStyles.required}>*</Text></Text>
             <TextInput
-              style={styles.input}
+              style={EditScreenStyles.input}
               value={name}
               onChangeText={setName}
               autoCorrect={false}
@@ -116,10 +124,10 @@ const EditProfile: React.FC = () => {
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address</Text>
+          <View style={EditScreenStyles.inputGroup}>
+            <Text style={EditScreenStyles.label}>Email Address</Text>
             <TextInput
-              style={styles.input}
+              style={EditScreenStyles.input}
               value={email}
               onChangeText={setEmail}
               placeholder="Enter your email"
@@ -129,10 +137,10 @@ const EditProfile: React.FC = () => {
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Age <Text style={styles.required}>*</Text></Text>
+          <View style={EditScreenStyles.inputGroup}>
+            <Text style={EditScreenStyles.label}>Age <Text style={EditScreenStyles.required}>*</Text></Text>
             <TextInput
-              style={styles.input}
+              style={EditScreenStyles.input}
               value={age}
               onChangeText={setAge}
               placeholder="Enter your age"
@@ -141,21 +149,38 @@ const EditProfile: React.FC = () => {
             />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Gender <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              value={gender}
-              onChangeText={setGender}
-              placeholder="Enter your gender"
-              placeholderTextColor="#9CA3AF"
-            />
+          {/* GENDER DROPDOWN */}
+          <View style={EditScreenStyles.inputGroup}>
+            <Text style={EditScreenStyles.label}>Gender <Text style={EditScreenStyles.required}>*</Text></Text>
+            <View style={EditScreenStyles.pickerWrapper}>
+              <Picker
+                selectedValue={gender}
+                onValueChange={(itemValue) => setGender(itemValue)}
+                style={EditScreenStyles.picker}
+                dropdownIconColor="#9CA3AF"
+              ><Picker.Item
+                  key="placeholder"
+                  label="Select Gender"
+                  value=""
+                  color={'#9CA3AF'}
+                  enabled={false}
+                />
+                {GENDER_OPTIONS.map((item) => (
+                  <Picker.Item
+                    key={item.value}
+                    label={item.label}
+                    value={item.value}
+                    color={'#111827'}
+                  />
+                ))}
+              </Picker>
+            </View>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone Number</Text>
+          <View style={EditScreenStyles.inputGroup}>
+            <Text style={EditScreenStyles.label}>Phone Number</Text>
             <TextInput
-              style={styles.input}
+              style={EditScreenStyles.input}
               value={phoneNumber}
               onChangeText={setPhoneNumber}
               placeholder="Enter your phone number"
@@ -166,9 +191,9 @@ const EditProfile: React.FC = () => {
 
           <View style={visionProfileStyles.eyeContainer}>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Left Eye Sight <Text style={styles.required}>*</Text></Text>
+              <Text style={EditScreenStyles.label}>Left Eye Sight</Text>
               <TextInput
-                style={styles.input}
+                style={EditScreenStyles.input}
                 value={eyeSight.leftEye}
                 onChangeText={(text) => setEyeSight({ ...eyeSight, leftEye: text })}
                 placeholder="-2.25"
@@ -180,9 +205,9 @@ const EditProfile: React.FC = () => {
               />
             </View>
             <View style={visionProfileStyles.eyeInputWrapper}>
-              <Text style={styles.label}>Right Eye Sight <Text style={styles.required}>*</Text></Text>
+              <Text style={EditScreenStyles.label}>Right Eye Sight</Text>
               <TextInput
-                style={styles.input}
+                style={EditScreenStyles.input}
                 value={eyeSight.rightEye}
                 onChangeText={(text) => setEyeSight({ ...eyeSight, rightEye: text })}
                 placeholder="-2.50"
@@ -199,20 +224,20 @@ const EditProfile: React.FC = () => {
       </ScrollView>
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.infoCard}>
-          <Text style={styles.infoText}>
+      <View style={EditScreenStyles.footer}>
+        <View style={EditScreenStyles.infoCard}>
+          <Text style={EditScreenStyles.infoText}>
             * Required fields. Your information is kept private and secure.
           </Text>
         </View>
         <TouchableOpacity
-          style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
+          style={[EditScreenStyles.saveButton, isSaving && EditScreenStyles.saveButtonDisabled]}
           onPress={handleSave}
           disabled={isSaving}
           activeOpacity={0.8}
         >
           <Save size={20} color="#FFFFFF" strokeWidth={2} />
-          <Text style={styles.saveButtonText}>
+          <Text style={EditScreenStyles.saveButtonText}>
             {isSaving ? 'Saving...' : 'Save Changes'}
           </Text>
         </TouchableOpacity>
@@ -223,7 +248,7 @@ const EditProfile: React.FC = () => {
 
 export default EditProfile;
 
-const styles = StyleSheet.create({
+export const EditScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: -20,
@@ -249,6 +274,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#374151',
     marginBottom: 8,
+  },
+  pickerWrapper: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    overflow: 'hidden',
+  },
+  picker: {
+    color: '#111827',
+    marginLeft: Platform.OS === 'ios' ? -16 : 8,
+    paddingVertical: Platform.OS === 'android' ? 0 : 0,
+    marginTop: Platform.OS === 'android' ? 0 : 0,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   input: {
     backgroundColor: '#FFFFFF',
