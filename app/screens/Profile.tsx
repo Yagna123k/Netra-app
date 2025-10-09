@@ -29,6 +29,8 @@ const Profile: React.FC = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fontSize, setFontSize] = useState(16);
+  const [contrastLevel, setContrastLevel] = useState('normal');
+  const [blueLightFilter, setBlueLightFilter] = useState('Off');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   // Load profile data from AsyncStorage when the screen is focused
@@ -52,6 +54,8 @@ const Profile: React.FC = () => {
             setPhoneNumber('');
           }
           setFontSize(fontSizeData ? parseInt(fontSizeData, 10) : 16);
+          setContrastLevel(await AsyncStorage.getItem('@contrast_level') || 'normal');
+          setBlueLightFilter(await AsyncStorage.getItem('@blue_light_filter') || 'Off');
         } catch (e) {
           console.error('Failed to load profile data', e);
         }
@@ -201,12 +205,12 @@ const Profile: React.FC = () => {
             <View style={styles.settingDivider} />
             <View style={styles.settingItem}>
               <Text style={styles.settingLabel}>Contrast Level</Text>
-              <Text style={styles.settingValue}>Normal</Text>
+              <Text style={styles.settingValue}>{contrastLevel}</Text>
             </View>
             <View style={styles.settingDivider} />
             <View style={styles.settingItem}>
               <Text style={styles.settingLabel}>Blue Light Filter</Text>
-              <Text style={styles.settingValue}>Off</Text>
+              <Text style={styles.settingValue}>{blueLightFilter === 'true' ? 'On' : 'Off'}</Text>
             </View>
           </View>
         </View>
