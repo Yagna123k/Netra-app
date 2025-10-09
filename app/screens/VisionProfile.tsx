@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Alert, Platform } from "react-native";
+import { StyleSheet, Text, TextInput, View, Alert, Platform, useColorScheme } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/ui/Button";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -15,6 +15,7 @@ type VisionProfileProps = {
 }
 
 const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
+  const scheme = useColorScheme();
   const { mode } = route.params ?? { mode: "manual" };
 
   const [name, setName] = useState("");
@@ -120,7 +121,7 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputGroup}>
-        <View style={styles.inputContainer}>
+        <View>
           <View>
             <Text style={styles.inputText}>Name <Text style={styles.required}>*</Text></Text>
             <TextInput
@@ -163,15 +164,15 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
                   key="placeholder"
                   label="Select Gender"
                   value=""
-                  color={'#9CA3AF'}
-                  enabled={false}
+                  color={'#b1b1b1'}
+                  enabled
                 />
                 {GENDER_OPTIONS.map((item) => (
                   <Picker.Item
                     key={item.value}
                     label={item.label}
                     value={item.value}
-                    color={'#111827'}
+                    color={scheme === 'dark' ? '#FFFFFF' : '#111827'}
                   />
                 ))}
               </Picker>
@@ -255,17 +256,16 @@ export const styles = StyleSheet.create({
     width: "100%",
   },
   pickerWrapper: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#ccc',
     overflow: 'hidden',
     marginBottom: hp(2),
-
+    paddingHorizontal: wp(2)
   },
   picker: {
     color: '#111827',
-    marginLeft: Platform.OS === 'ios' ? -16 : 8,
+    marginLeft: Platform.OS === 'ios' ? -16 : 0,
     paddingVertical: Platform.OS === 'android' ? 0 : 0,
     marginTop: Platform.OS === 'android' ? 0 : 0,
     backgroundColor: "#f9f9fa",
@@ -273,6 +273,7 @@ export const styles = StyleSheet.create({
     fontSize: wp(4),
     borderWidth: 1,
     borderColor: "#ccc",
+    paddingLeft: wp(4),
   },
   eyeContainer: {
     flexDirection: "row",
@@ -283,7 +284,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: wp(2),
   },
   required: {
-    color: 'red',
+    color: '#de5d5e',
   },
-  inputContainer: {},
 });

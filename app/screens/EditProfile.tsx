@@ -8,7 +8,8 @@ import {
   TextInput,
   Alert,
   StyleSheet,
-  Platform // Imported for platform-specific styling
+  Platform,
+  useColorScheme, // Imported for platform-specific styling
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Save } from 'lucide-react-native';
@@ -17,9 +18,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types/navigation';
 import { styles as visionProfileStyles } from './VisionProfile';
-// import DropdownComponent from '../components/ui/Dropdown';
+import { wp } from '../helpers/common';
 
 const EditProfile: React.FC = () => {
+  const scheme = useColorScheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const GENDER_OPTIONS = [
     { label: 'Male', value: 'Male' },
@@ -163,15 +165,15 @@ const EditProfile: React.FC = () => {
                   label="Select Gender"
                   value=""
                   color={'#9CA3AF'}
-                  enabled={false}
+                  enabled={true}
                 />
                 {GENDER_OPTIONS.map((item) => (
                   <Picker.Item
                     key={item.value}
                     label={item.label}
                     value={item.value}
-                    color={'#111827'}
-                  />
+                    color={scheme === 'dark' ? '#FFFFFF' : '#111827'}
+                    />
                 ))}
               </Picker>
             </View>
@@ -263,7 +265,7 @@ export const EditScreenStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   required: {
-    color: 'red'
+    color: '#de5d5e',
   },
   inputGroup: {
     marginBottom: 20,
@@ -280,12 +282,11 @@ export const EditScreenStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E7EB',
     overflow: 'hidden',
+    paddingHorizontal: wp(2)
   },
   picker: {
     color: '#111827',
-    marginLeft: Platform.OS === 'ios' ? -16 : 8,
     paddingVertical: Platform.OS === 'android' ? 0 : 0,
-    marginTop: Platform.OS === 'android' ? 0 : 0,
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     fontSize: 16,

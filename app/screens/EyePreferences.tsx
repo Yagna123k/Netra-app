@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { Sun, Moon, Droplet, Bell, Monitor, Minus, Plus } from 'lucide-react-native';
 import { Colors } from '../constants/Colors';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
 
 const EyePreferences: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [fontSize, setFontSize] = useState(16);
   const [contrastLevel, setContrastLevel] = useState<'low' | 'normal' | 'high'>('normal');
   const [blueLightFilter, setBlueLightFilter] = useState(false);
@@ -18,6 +22,31 @@ const EyePreferences: React.FC = () => {
 
   const contrastOptions: Array<'low' | 'normal' | 'high'> = ['low', 'normal', 'high'];
 
+  useEffect(()=>{
+      const loadProfileData = async () => {
+        try {
+          const fontSizeData = await AsyncStorage.getItem('@font_size');
+          setFontSize(fontSizeData ? parseInt(fontSizeData, 10) : 16);
+        } catch (e) {
+          console.error('Failed to load profile data', e);
+        }
+      };
+
+      loadProfileData();
+  },[])
+
+  const handleSave = async () => {
+    try {
+      await AsyncStorage.setItem('@font_size', fontSize.toString());
+      await AsyncStorage.setItem('@contrast_level', contrastLevel.toString());
+      await AsyncStorage.setItem('@blue_light_filter', blueLightFilter.toString());
+      Alert.alert('Success', 'Preferences saved successfully');
+      navigation.goBack();
+    } catch (e) {
+      console.error('Failed to save preferences', e);
+      Alert.alert('Error', 'Failed to save preferences');
+    }
+  };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -169,7 +198,7 @@ const EyePreferences: React.FC = () => {
         </View>
 
         {/* Save Button */}
-        <TouchableOpacity style={styles.saveButton} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.saveButton} activeOpacity={0.8} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save Preferences</Text>
         </TouchableOpacity>
       </ScrollView>
