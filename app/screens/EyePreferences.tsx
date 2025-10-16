@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigation';
+import { NativeModules } from 'react-native';
 
 const EyePreferences: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -15,6 +16,8 @@ const EyePreferences: React.FC = () => {
   const [nightMode, setNightMode] = useState(false);
   const [screenDistanceAlerts, setScreenDistanceAlerts] = useState(true);
   const [breakReminders, setBreakReminders] = useState(true);
+  const { PermissionModule } = NativeModules;
+  const { FontScale } = NativeModules;
 
   const adjustFontSize = (delta: number) => {
     setFontSize(prev => Math.max(12, Math.min(32, prev + delta)));
@@ -22,24 +25,37 @@ const EyePreferences: React.FC = () => {
 
   const contrastOptions: Array<'low' | 'normal' | 'high'> = ['low', 'normal', 'high'];
 
-  useEffect(()=>{
-      const loadProfileData = async () => {
-        try {
-          const fontSizeData = await AsyncStorage.getItem('@font_size');
-          setFontSize(fontSizeData ? parseInt(fontSizeData, 10) : 16);
-        } catch (e) {
-          console.error('Failed to load profile data', e);
-        }
-      };
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const fontSizeData = await AsyncStorage.getItem('@font_size');
+        setFontSize(fontSizeData ? parseInt(fontSizeData, 10) : 16);
+      } catch (e) {
+        console.error('Failed to load profile data', e);
+      }
+    };
 
-      loadProfileData();
-  },[])
+    loadProfileData();
+  }, [])
 
   const handleSave = async () => {
+    if (PermissionModule?.checkModifySettings) {
+      const result = await PermissionModule.checkModifySettings();
+      if (!result) {
+        PermissionModule.requestModifySettings();
+        return
+      }
+    }
+
     try {
       await AsyncStorage.setItem('@font_size', fontSize.toString());
       await AsyncStorage.setItem('@contrast_level', contrastLevel.toString());
       await AsyncStorage.setItem('@blue_light_filter', blueLightFilter.toString());
+      const value = await AsyncStorage.getItem('@font_size');
+      if (value !== null) {
+        await FontScale.setFontScale(parseInt(value, 10) / 16);
+        FontScale.requestWriteSettings();
+      }
       Alert.alert('Success', 'Preferences saved successfully');
       navigation.goBack();
     } catch (e) {

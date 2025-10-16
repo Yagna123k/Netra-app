@@ -8,6 +8,7 @@ import { RouteProp } from "@react-navigation/native";
 import { hp, wp } from "../helpers/common";
 import { Colors } from "../constants/Colors";
 import { Picker } from "@react-native-picker/picker";
+import { calculateFontSize } from "../utils/fontUtils";
 
 type VisionProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, "VisionProfile">;
@@ -30,15 +31,6 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
     { value: "prefer_not_to_say", label: "Prefer not to say" },
   ];
 
-  const calculateFontSize = (
-    baseFontPx: number,
-    leftEyesight: number,
-    rightEyesight: number
-  ): number => {
-    const avgEyesight = (leftEyesight + rightEyesight) / 2;
-    return Math.round(baseFontPx * (1 + Math.abs(avgEyesight) * 0.8) * 10) / 10;
-  };
-
   const handleNext = async () => {
 
     const leftEyeNum = parseFloat(leftEye);
@@ -54,7 +46,6 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       return;
     }
 
-    // Validate age is a number and within reasonable range
     const ageNum = parseInt(age, 10);
     if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
       Alert.alert("Error", "Please enter a valid age between 1 and 120");
@@ -66,7 +57,6 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
       return;
     }
 
-    // Validate eye measurements if in manual mode
     if (mode === "manual") {
       if (!leftEye.trim()) {
         Alert.alert("Error", "Please enter your left eye sight");
@@ -102,10 +92,8 @@ const VisionProfile = ({ navigation, route }: VisionProfileProps) => {
 
       await AsyncStorage.setItem("profileData", JSON.stringify(visionData));
 
-      // Calculating font size based on eye sight.
-      const fontSize = calculateFontSize(14, leftEyeNum, rightEyeNum)
+      const fontSize = calculateFontSize(16, leftEyeNum, rightEyeNum)
       await AsyncStorage.setItem('@font_size', fontSize.toString());
-      console.log(fontSize)
 
       if (mode === "manual") {
         navigation.navigate("Preferences");
@@ -235,7 +223,6 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     alignItems: "center",
-    marginBottom: hp(2),
   },
   inputText: {
     fontSize: wp(4.5),

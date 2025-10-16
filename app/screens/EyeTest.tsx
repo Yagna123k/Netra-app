@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.light,
     paddingHorizontal: wp(5),
-    paddingVertical: hp(5),
+    paddingVertical: hp(3),
   },
   title: {
     fontSize: wp(5.5), // scaled relative to width
