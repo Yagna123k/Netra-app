@@ -1,4 +1,8 @@
 {
   "name": "app",
-  "displayName": "app"
+  "displayName": "Netra",
+  "version": "1.0.0",
+  "author": "YMS Team",
+  "license": "MIT",
+  "repository": "https://github.com/Yagna123k/Netra-app"
 }
