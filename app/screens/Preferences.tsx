@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
-  TextInput
+  TextInput,
+  Alert,
 } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
@@ -15,6 +16,8 @@ import Button from '../components/ui/Button';
 import { hp, wp } from '../helpers/common';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeModules } from 'react-native';
+import { Fonts } from '../constants/Fonts';
 
 type PreferencesScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -55,8 +58,10 @@ const PreferenceCard: React.FC<PreferenceCardProps> = ({ iconName, title, subtit
   </TouchableOpacity>
 );
 
+const { PermissionModule, FontScale } = NativeModules;
+
 const Preferences: React.FC<Props> = ({ navigation }) => {
-  const [FontSize, setFontSize] = useState(16);
+  const [FontSize, setFontSize] = useState(14);
   const [modalVisible, setModalVisible] = useState(false);
   const [tempFontSize, setTempFontSize] = useState(FontSize.toString());
 
@@ -84,14 +89,44 @@ const Preferences: React.FC<Props> = ({ navigation }) => {
     }
   };
 
- const handleConfirm = () => {
-  navigation.navigate('MainApp'); // Changed from 'Home' to 'MainApp'
-}
+  const handlePermission = async () => {
+    navigation.navigate('Permission');
+  };
+
+  const handleConfirm = async () => {
+    try {
+      if (PermissionModule?.checkModifySettings) {
+        const result = await PermissionModule.checkModifySettings();
+        if (!result) {
+          Alert.alert('Error', 'Please grant the required permissions');
+          return;
+        }
+      }
+
+      await AsyncStorage.setItem('preferences', 'true');
+
+      const value = await AsyncStorage.getItem('@font_size');
+      const size = value ? parseInt(value, 10) : null;
+
+      if (size && FontScale?.setFontScale && FontScale?.requestWriteSettings) {
+        try {
+          await FontScale.setFontScale(size / 16);
+          FontScale.requestWriteSettings();
+        } catch (err) {
+          console.error('Failed to set font scale', err);
+        }
+      }
+
+      navigation.navigate('MainApp');
+    } catch (e) {
+      console.error('handleConfirm failed', e);
+      Alert.alert('Error', 'Something went wrong');
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View>
-
         <View style={styles.sampleContainer}>
           <Text style={styles.heading}>Sample Text</Text>
           <Text style={[styles.paragraph, { fontSize: FontSize }]}>
@@ -158,6 +193,12 @@ const Preferences: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
+        <View style={styles.checkboxContainer}>
+          <Text style={styles.label}>Allow required permissions </Text>
+          <TouchableOpacity onPress={handlePermission}>
+            <Text style={styles.open}>open settings</Text>
+          </TouchableOpacity>
+        </View>
         <Button
           title="Confirm Settings"
           variant="primary"
@@ -175,9 +216,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(5),
     paddingVertical: hp(3),
     alignItems: 'center',
-    flex:1,
-    flexDirection:'column',
-    justifyContent:'space-between'
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   },
   sampleContainer: {
     backgroundColor: '#FFFFFF',
@@ -236,12 +277,27 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    alignItems: 'center',
-    marginBottom: hp(3),
+    alignItems: 'flex-start',
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp(2),
+  },
+  label: {
+    fontSize: 16,
+    marginLeft: 12,
+    color: Colors.dark,
+    fontFamily: Fonts.regular,
+  },
+  open: {
+    textDecorationLine: 'underline',
+    color: Colors.primary
+  },
+  checkbox: { width: 22, height: 22 },
   modalBackground: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' },
   modalContainer: { width: '80%', backgroundColor: '#fff', padding: wp(5), borderRadius: wp(3), alignItems: 'center' },
   modalTitle: { fontSize: wp(5), fontWeight: '600', marginBottom: hp(2) },
   input: { borderWidth: 1, borderColor: Colors.lightPrimary, borderRadius: wp(2), padding: wp(3), width: '60%', textAlign: 'center', marginBottom: hp(3) },
-  modalButtons: { flexDirection: 'row', justifyContent: 'space-between', gap: wp(3) }
+  modalButtons: { flexDirection: 'row', justifyContent: 'space-between', gap: wp(3) },
 });

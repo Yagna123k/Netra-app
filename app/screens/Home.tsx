@@ -88,10 +88,10 @@ const Home: React.FC = () => {
                 </View>
 
                 {/* Greeting */}
-                <View style={styles.greeting}>
+                {/* <View style={styles.greeting}>
                     <Text style={styles.greetingText}>Welcome back!</Text>
                     <Text style={styles.greetingSubtext}>How can we help you today?</Text>
-                </View>
+                </View> */}
 
                 <View style={styles.container2}>
                     <Text style={styles.sectionTitle}>Quick Actions</Text>
@@ -312,7 +312,8 @@ const styles = StyleSheet.create({
     },
     container2: {
         marginBottom: 32,
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        marginTop:16
     },
     sectionTitle: {
         fontSize: 12,

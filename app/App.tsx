@@ -1,4 +1,4 @@
-import "react-native-gesture-handler"; // MUST BE FIRST IMPORT
+import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,6 +19,7 @@ import SampleEyeTest from "./screens/SampleEyeTest";
 import HearingTest from "./screens/HearingTest";
 import Profile from "./screens/Profile";
 import EditProfile from "./screens/EditProfile";
+import Permission from "./screens/Permission";
 
 console.log("🔧 App starting with gesture handler");
 
@@ -101,19 +102,24 @@ const LoadingScreen = () => (
 
 const App = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(true);
-  const [initialRoute, setInitialRoute] = useState<"Landing" | "MainApp">("Landing");
+  const [initialRoute, setInitialRoute] = useState<"Landing" | "MainApp" | "Preferences">("Landing");
 
   useEffect(() => {
     const checkUserOnboarding = async () => {
       try {
         console.log("🔍 Checking for existing user data...");
         const profileData = await AsyncStorage.getItem("profileData");
+        const pref = await AsyncStorage.getItem("preferences")
 
         if (profileData !== null) {
           const parsedData = JSON.parse(profileData);
           if (parsedData.name && parsedData.eyeSight) {
             console.log("✅ Existing user detected - Navigating to Home");
-            setInitialRoute("MainApp");
+            if (pref) {
+              setInitialRoute("MainApp");
+            }else{
+              setInitialRoute("Preferences")
+            }
           } else {
             console.log("⚠️ Incomplete profile data - Showing Landing screen");
             setInitialRoute("Landing");
@@ -201,6 +207,11 @@ const App = (): React.ReactElement => {
               headerStyle: { backgroundColor: "#fff" },
               headerTitleStyle: { fontWeight: "bold", fontSize: 20 },
             }}
+          />
+          <Stack.Screen
+            name="Permission"
+            component={Permission}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="EyePreferences"

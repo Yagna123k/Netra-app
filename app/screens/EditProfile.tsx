@@ -19,6 +19,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types/navigation';
 import { styles as visionProfileStyles } from './VisionProfile';
 import { wp } from '../helpers/common';
+import { NativeModules } from 'react-native';
+import { calculateFontSize } from '../utils/fontUtils';
 
 const EditProfile: React.FC = () => {
   const scheme = useColorScheme();
@@ -39,6 +41,8 @@ const EditProfile: React.FC = () => {
   });
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const { PermissionModule, FontScale } = NativeModules;
+
 
   // Load profile data from AsyncStorage
   useEffect(() => {
@@ -77,9 +81,16 @@ const EditProfile: React.FC = () => {
       return;
     }
 
-    if (!eyeSight.leftEye.trim() || !eyeSight.rightEye.trim()) {
-      Alert.alert('Error', 'Please enter your eye sight');
-      return;
+    if (eyeSight.leftEye.trim() && eyeSight.rightEye.trim()) {
+      const leftEyeNum = parseFloat(eyeSight.leftEye);
+      const rightEyeNum = parseFloat(eyeSight.rightEye);
+      const fontSize = calculateFontSize(16, leftEyeNum, rightEyeNum);
+      await AsyncStorage.setItem('@font_size', fontSize.toString());
+
+      if (FontScale?.setFontScale && FontScale?.requestWriteSettings) {
+          await FontScale.setFontScale(fontSize / 16);
+          FontScale.requestWriteSettings();
+        }
     }
 
     setIsSaving(true);
@@ -95,6 +106,13 @@ const EditProfile: React.FC = () => {
       };
 
       await AsyncStorage.setItem('profileData', JSON.stringify(profileData));
+      if (PermissionModule?.checkModifySettings) {
+        const result = await PermissionModule.checkModifySettings();
+        if (!result) {
+          PermissionModule.requestModifySettings();
+          return
+        }
+      }
 
       Alert.alert('Success', 'Profile updated successfully', [
         {
@@ -173,7 +191,7 @@ const EditProfile: React.FC = () => {
                     label={item.label}
                     value={item.value}
                     color={scheme === 'dark' ? '#FFFFFF' : '#111827'}
-                    />
+                  />
                 ))}
               </Picker>
             </View>
@@ -260,6 +278,7 @@ export const EditScreenStyles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 100,
+    paddingTop: 40
   },
   form: {
     paddingHorizontal: 20,
@@ -324,7 +343,7 @@ export const EditScreenStyles = StyleSheet.create({
     paddingVertical: 16,
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
-    backgroundColor:'#ffffff'
+    backgroundColor: '#ffffff'
   },
   saveButton: {
     flexDirection: 'row',
